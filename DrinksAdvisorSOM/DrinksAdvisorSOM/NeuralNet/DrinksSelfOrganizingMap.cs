@@ -18,7 +18,8 @@ namespace DrinksAdvisorSOM.NeuralNet
 
         public DrinksSelfOrganizingMap()
         {
-            DrinksContainer = LoadTrainingSet(@"C:\Users\Fin\Dropbox\Studia\Sieci neuronowe\Projekt\SOM\app\DrinksAdvisorSOM\DrinksAdvisorSOM\features.csv");
+            
+            DrinksContainer = LoadTrainingSet(Properties.Resources.DrinksFeatures);
             neuralNetRenderer = new NeuralNetRenderer();
         }
 

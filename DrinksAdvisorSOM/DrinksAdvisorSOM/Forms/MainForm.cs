@@ -52,7 +52,7 @@ namespace DrinksAdvisorSOM.Forms
                     Console.WriteLine("Elapsed time: " + sw.ElapsedMilliseconds / 1000.0f);
                     ts_lbl_Status.Text = "Elapsed time: " + sw.ElapsedMilliseconds / 1000.0f;
 
-                    drinksMap.GetRender().Save(@"D:\neuralnet.png", System.Drawing.Imaging.ImageFormat.Png);
+                    //drinksMap.GetRender().Save(@"D:\neuralnet.png", System.Drawing.Imaging.ImageFormat.Png);
                 }
 
 

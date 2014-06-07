@@ -11,34 +11,36 @@ namespace DrinksAdvisorSOM.NeuralNet.FileIO
     {
         private const int COLUMNS_TO_SKIP = 3;
 
-        public DrinksContainer LoadDrinks(string filename)
+        public DrinksContainer LoadDrinks(string source)
         {
-            StreamReader streamReader = new StreamReader(File.OpenRead(filename));
-            List<Drink> trainingSet = new List<Drink>();
-            
-            string line = streamReader.ReadLine();
-            string[] columnNames = line.Split(';').Skip(COLUMNS_TO_SKIP).ToArray();
-
-
-            while (!streamReader.EndOfStream)
+            using (StringReader stringReader = new StringReader(source))
             {
-                line = streamReader.ReadLine();
-                string[] values = line.Split(';');
-                int id = int.Parse(values[0]);
-                string drinkName = values[1],
-                       url = values[2];
-                
-                double[] trainingRow = new double[values.Length - COLUMNS_TO_SKIP];
+                List<Drink> trainingSet = new List<Drink>();
 
-                for (int i = 0; i < trainingRow.Length - 1; i++)
+                string line = stringReader.ReadLine();
+                string[] columnNames = line.Split(';').Skip(COLUMNS_TO_SKIP).ToArray();
+
+
+                while ((line = stringReader.ReadLine()) != null)
                 {
-                    trainingRow[i] = double.Parse(values[i + COLUMNS_TO_SKIP], System.Globalization.CultureInfo.InvariantCulture);
+                    string[] values = line.Split(';');
+                    int id = int.Parse(values[0]);
+                    string drinkName = values[1],
+                           url = values[2];
+
+                    double[] trainingRow = new double[values.Length - COLUMNS_TO_SKIP];
+
+                    for (int i = 0; i < trainingRow.Length - 1; i++)
+                    {
+                        trainingRow[i] = double.Parse(values[i + COLUMNS_TO_SKIP], System.Globalization.CultureInfo.InvariantCulture);
+                    }
+
+                    trainingSet.Add(new Drink(id, drinkName, url, trainingRow));
                 }
 
-                trainingSet.Add(new Drink(id, drinkName, url, trainingRow));
+                return new DrinksContainer(trainingSet.ToDictionary(r => r.ID, r => r), columnNames);
             }
-
-            return new DrinksContainer(trainingSet.ToDictionary( r => r.ID, r => r), columnNames);
+            
         }
     }
 }
