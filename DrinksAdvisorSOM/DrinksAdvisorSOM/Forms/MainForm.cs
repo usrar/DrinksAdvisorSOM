@@ -52,28 +52,34 @@ namespace DrinksAdvisorSOM.Forms
                     Console.WriteLine("Elapsed time: " + sw.ElapsedMilliseconds / 1000.0f);
                     ts_lbl_Status.Text = "Elapsed time: " + sw.ElapsedMilliseconds / 1000.0f;
 
-                    //drinksMap.GetRender().Save(@"D:\neuralnet.png", System.Drawing.Imaging.ImageFormat.Png);
+                    RefreshDrinksTable(drinksMap.GetDrinksContainer());
                 }
-
 
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void saveNeuralNetToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.DefaultExt = ".xml";
-            saveFileDialog.Filter = "Neural Net Files (*.xml)|*.xml";
-            DialogResult saveFileDialogResult = saveFileDialog.ShowDialog();
-            if (saveFileDialogResult == DialogResult.OK)
+            try
             {
-                drinksMap.SaveNeuralNet(saveFileDialog.FileName);
+                EnsureDrinksMapIsNotNull();
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.DefaultExt = ".xml";
+                saveFileDialog.Filter = "Neural Net Files (*.xml)|*.xml";
+                DialogResult saveFileDialogResult = saveFileDialog.ShowDialog();
+                if (saveFileDialogResult == DialogResult.OK)
+                {
+                    drinksMap.SaveNeuralNet(saveFileDialog.FileName);
+                }
             }
-
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void openNeuralNetToolStripMenuItem_Click(object sender, EventArgs e)
@@ -93,7 +99,7 @@ namespace DrinksAdvisorSOM.Forms
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -166,7 +172,7 @@ namespace DrinksAdvisorSOM.Forms
             try
             {
                 EnsureDrinksMapIsNotNull();
-                List<Drink> similarDrinks = drinksMap.FindSimilarDrinks(GetSelectedDrinkID(), 5);
+                IEnumerable<Drink> similarDrinks = drinksMap.FindSimilarDrinks(GetSelectedDrinkID(), 5);
             }
             catch (Exception ex)
             {
@@ -191,6 +197,26 @@ namespace DrinksAdvisorSOM.Forms
         {
             if (dgv_Drinks.SelectedRows.Count == 0)
                 throw new Exception("Try to indicate a drink first.");
+        }
+
+        private void getRenderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                EnsureDrinksMapIsNotNull();
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.DefaultExt = ".png";
+                saveFileDialog.Filter = "Images (*.png)|*.png";
+                DialogResult saveFileDialogResult = saveFileDialog.ShowDialog();
+                if (saveFileDialogResult == DialogResult.OK)
+                {
+                    drinksMap.GetRender().Save(saveFileDialog.FileName);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
 

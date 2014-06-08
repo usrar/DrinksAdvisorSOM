@@ -16,7 +16,7 @@ namespace DrinksAdvisorSOM.NeuralNet.FileIO
                 writer.WriteStartDocument();
                 writer.WriteStartElement("NeuralNet");
                 writer.WriteStartElement("Meta");
-                writer.WriteElementString("Width", drinksSelfOrganizingMap.NeuralMapHeight.ToString());
+                writer.WriteElementString("Width", drinksSelfOrganizingMap.NeuralMapWidth.ToString());
                 writer.WriteElementString("Height", drinksSelfOrganizingMap.NeuralMapHeight.ToString());
                 writer.WriteElementString("DistanceBetweenNeurons", drinksSelfOrganizingMap.DistanceBetweenNeurons.ToString());
                 writer.WriteEndElement();

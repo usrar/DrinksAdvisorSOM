@@ -43,6 +43,8 @@
             this.lbl_FilterInput = new System.Windows.Forms.Label();
             this.webBrowserDrinks = new System.Windows.Forms.WebBrowser();
             this.btn_FindSimilar = new System.Windows.Forms.Button();
+            this.imagingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.getRenderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Drinks)).BeginInit();
@@ -51,7 +53,8 @@
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem});
+            this.fileToolStripMenuItem,
+            this.imagingToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(984, 24);
@@ -184,6 +187,21 @@
             this.btn_FindSimilar.UseVisualStyleBackColor = true;
             this.btn_FindSimilar.Click += new System.EventHandler(this.btn_FindSimilar_Click);
             // 
+            // imagingToolStripMenuItem
+            // 
+            this.imagingToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.getRenderToolStripMenuItem});
+            this.imagingToolStripMenuItem.Name = "imagingToolStripMenuItem";
+            this.imagingToolStripMenuItem.Size = new System.Drawing.Size(63, 20);
+            this.imagingToolStripMenuItem.Text = "Imaging";
+            // 
+            // getRenderToolStripMenuItem
+            // 
+            this.getRenderToolStripMenuItem.Name = "getRenderToolStripMenuItem";
+            this.getRenderToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.getRenderToolStripMenuItem.Text = "Get render";
+            this.getRenderToolStripMenuItem.Click += new System.EventHandler(this.getRenderToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -226,6 +244,8 @@
         private System.Windows.Forms.Label lbl_FilterInput;
         private System.Windows.Forms.WebBrowser webBrowserDrinks;
         private System.Windows.Forms.Button btn_FindSimilar;
+        private System.Windows.Forms.ToolStripMenuItem imagingToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem getRenderToolStripMenuItem;
     }
 }
 

@@ -9,7 +9,7 @@ namespace DrinksAdvisorSOM.NeuralNet.Rendering
 {
     class NeuralNetRenderer
     {
-        private const float SCALE_FACTOR = 27;
+        private const float SCALE_FACTOR = 23;
         private Dictionary<int, Brush> drinksBrushesDictionary;
         private Random randomizer;
 

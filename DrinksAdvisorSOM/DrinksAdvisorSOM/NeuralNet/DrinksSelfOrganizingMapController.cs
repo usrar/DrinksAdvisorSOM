@@ -58,7 +58,7 @@ namespace DrinksAdvisorSOM.NeuralNet
         }
 
 
-        public List<Drink> FindSimilarDrinks(int drinkID, int quantity)
+        public IEnumerable<Drink> FindSimilarDrinks(int drinkID, int quantity)
         {
             List<int> similarDrinksID = new List<int>(quantity);
 
@@ -78,31 +78,31 @@ namespace DrinksAdvisorSOM.NeuralNet
 
                     for (float i = startX; i <= endX; i += drinksMap.DistanceBetweenNeurons)
                     {
-                        int sample1 = drinksMap.GetDrinkIDByCoordinates(new PointF(i, startY)),
-                            sample2 = drinksMap.GetDrinkIDByCoordinates(new PointF(i, endY));
+                        int? sample1 = drinksMap.GetDrinkIDByCoordinates(new PointF(i, startY)),
+                             sample2 = drinksMap.GetDrinkIDByCoordinates(new PointF(i, endY));
 
-                        if (sample1 != drinkID && !similarDrinksID.Contains(sample1))
+                        if (sample1.HasValue &&  sample1.Value != drinkID && !similarDrinksID.Contains(sample1.Value))
                         {
-                            similarDrinksID.Add(sample1);
+                            similarDrinksID.Add(sample1.Value);
                         }
-                        if (sample2 != drinkID && !similarDrinksID.Contains(sample2))
+                        if (sample2.HasValue && sample2.Value != drinkID && !similarDrinksID.Contains(sample2.Value))
                         {
-                            similarDrinksID.Add(sample2);
+                            similarDrinksID.Add(sample2.Value);
                         }
                     }
 
                     for (float i = startY; i < endY; i += drinksMap.DistanceBetweenNeurons)
                     {
-                        int sample1 = drinksMap.GetDrinkIDByCoordinates(new PointF(startX, i)),
-                            sample2 = drinksMap.GetDrinkIDByCoordinates(new PointF(endX, i));
+                        int? sample1 = drinksMap.GetDrinkIDByCoordinates(new PointF(startX, i)),
+                             sample2 = drinksMap.GetDrinkIDByCoordinates(new PointF(endX, i));
 
-                        if (sample1 != drinkID && !similarDrinksID.Contains(sample1))
+                        if (sample1.HasValue && sample1.Value != drinkID && !similarDrinksID.Contains(sample1.Value))
                         {
-                            similarDrinksID.Add(sample1);
+                            similarDrinksID.Add(sample1.Value);
                         }
-                        if (sample2 != drinkID && !similarDrinksID.Contains(sample2))
+                        if (sample2.HasValue && sample2.Value != drinkID && !similarDrinksID.Contains(sample2.Value))
                         {
-                            similarDrinksID.Add(sample2);
+                            similarDrinksID.Add(sample2.Value);
                         }
                     }
                 }
@@ -113,7 +113,7 @@ namespace DrinksAdvisorSOM.NeuralNet
             List<Drink> similarDrinks = new List<Drink>();
             similarDrinksID.ForEach(id => similarDrinks.Add(DrinksContainer.DrinksDictionary[id]));
 
-            return similarDrinks;
+            return similarDrinks.Take(quantity);
         }
 
 

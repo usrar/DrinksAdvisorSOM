@@ -14,6 +14,6 @@ namespace DrinksAdvisorSOM.NeuralNet
         void LoadNeuralNet(string filename);
         Image GetRender();
         DrinksContainer GetDrinksContainer();
-        List<Drink> FindSimilarDrinks(int drinkID, int quantity);
+        IEnumerable<Drink> FindSimilarDrinks(int drinkID, int quantity);
     }
 }

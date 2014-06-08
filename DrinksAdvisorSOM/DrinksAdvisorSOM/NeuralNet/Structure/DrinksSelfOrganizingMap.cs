@@ -32,12 +32,26 @@ namespace DrinksAdvisorSOM.NeuralNet.Structure
 
         public List<PointF> GetCoordinatesListByDrinkID(int id)
         {
-            return nodesByDrinkIdDictionary[id];
+            if (nodesByDrinkIdDictionary.ContainsKey(id))
+            {
+                return nodesByDrinkIdDictionary[id];
+            }
+            else
+            {
+                return null;
+            }
         }
 
-        public int GetDrinkIDByCoordinates(PointF pointF)
+        public int? GetDrinkIDByCoordinates(PointF pointF)
         {
-            return nodesByCoordinatesDictionary[pointF];
+            if (nodesByCoordinatesDictionary.ContainsKey(pointF))
+            {
+                return nodesByCoordinatesDictionary[pointF];
+            }
+            else
+            {
+                return null;
+            }  
         }
 
         

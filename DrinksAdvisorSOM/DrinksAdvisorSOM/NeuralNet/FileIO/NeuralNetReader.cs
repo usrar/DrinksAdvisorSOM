@@ -20,11 +20,11 @@ namespace DrinksAdvisorSOM.NeuralNet.FileIO
 
             XElement xHeight = (from el in root.Elements("Meta")
                                select el.Element("Height")).First();
-            int height = int.Parse(xWidth.Value.Trim());
+            int height = int.Parse(xHeight.Value.Trim());
 
             XElement xDistance = (from el in root.Elements("Meta")
                                   select el.Element("DistanceBetweenNeurons")).First();
-            int distance = int.Parse(xWidth.Value.Trim());
+            int distance = int.Parse(xDistance.Value.Trim());
 
 
             IEnumerable<XElement> xnodes = from el in root.Descendants("Data").Elements()
