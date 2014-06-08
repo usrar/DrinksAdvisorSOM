@@ -14,7 +14,7 @@ namespace DrinksAdvisorSOM.Forms
 {
     public partial class MainForm : Form
     {
-        private INeuralNet drinksMap;
+        private IDrinksSelfOrganizingMapController drinksMap;
         private bool isFilterEnabled;
         private string inputFilter;
         private string columnName;
@@ -43,7 +43,7 @@ namespace DrinksAdvisorSOM.Forms
                 DialogResult parametersFormResult = parametersForm.ShowDialog();
                 if( parametersFormResult == System.Windows.Forms.DialogResult.OK)
                 {
-                    drinksMap = new DrinksSelfOrganizingMap();
+                    drinksMap = new DrinksSelfOrganizingMapController();
 
                     System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
                     sw.Start();
@@ -86,7 +86,7 @@ namespace DrinksAdvisorSOM.Forms
                 string filename = openFileDialog.FileName;
                 try
                 {
-                    drinksMap = new DrinksSelfOrganizingMap();
+                    drinksMap = new DrinksSelfOrganizingMapController();
                     drinksMap.LoadNeuralNet(filename);
                     RefreshDrinksTable(drinksMap.GetDrinksContainer());
 
@@ -156,12 +156,42 @@ namespace DrinksAdvisorSOM.Forms
             ts_lbl_Status.Text = "Navigating to: " + e.Url.ToString();
         }
 
-        private void webBrowser1_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+        private void webBrowserDrinks_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             ts_lbl_Status.Text = e.Url.ToString() + " loaded";
         }
 
-        
+        private void btn_FindSimilar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                EnsureDrinksMapIsNotNull();
+                List<Drink> similarDrinks = drinksMap.FindSimilarDrinks(GetSelectedDrinkID(), 5);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+
+        private void EnsureDrinksMapIsNotNull()
+        {
+            if (drinksMap == null)
+                throw new Exception("Try to load neural net first.");
+        }
+
+        private int GetSelectedDrinkID()
+        {
+            EnsureDrinksMapIsNotNull();
+            return (int) (dgv_Drinks.SelectedRows[0].Cells["DrinkID"].Value);
+        }
+
+        private void EnsureDrinkIsSelected()
+        {
+            if (dgv_Drinks.SelectedRows.Count == 0)
+                throw new Exception("Try to indicate a drink first.");
+        }
 
 
     }

@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Drawing;
+using DrinksAdvisorSOM.NeuralNet.Structure;
 
-namespace DrinksAdvisorSOM.NeuralNet
+namespace DrinksAdvisorSOM.NeuralNet.Rendering
 {
     class NeuralNetRenderer
     {
@@ -19,9 +20,10 @@ namespace DrinksAdvisorSOM.NeuralNet
     	}
 
 
-        public Image GetRender(Node[] neuralNet, int neuralMapWidth, int neuralMapHeight)
+        public Image GetRender(DrinksSelfOrganizingMap drinksMap)
         {
-            Bitmap render = new Bitmap((int)(neuralMapWidth * SCALE_FACTOR), (int)(neuralMapHeight * SCALE_FACTOR));
+
+            Bitmap render = new Bitmap((int)(drinksMap.NeuralMapWidth * SCALE_FACTOR), (int)(drinksMap.NeuralMapHeight * SCALE_FACTOR));
 
             using (Graphics g = Graphics.FromImage(render))
             {
@@ -30,7 +32,7 @@ namespace DrinksAdvisorSOM.NeuralNet
                 g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
 
 
-                foreach (Node node in neuralNet)
+                foreach (Node node in drinksMap.NeuralNet)
                 {
                     g.DrawString(node.DrinkID.ToString(), SystemFonts.MessageBoxFont, GetDrinkBrushById(node.DrinkID) , (float)(node.X * SCALE_FACTOR), (float)(node.Y * SCALE_FACTOR));
                 }

@@ -3,26 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml;
+using DrinksAdvisorSOM.NeuralNet.Structure;
 
 namespace DrinksAdvisorSOM.NeuralNet.FileIO
 {
     class NeuralNetWriter
     {
-        public void SaveNodes(Node[] nodes, string filename, int dimensions)
+        public void SaveNeuralNet(DrinksSelfOrganizingMap drinksSelfOrganizingMap, string filename)
         {
             using (XmlWriter writer = XmlWriter.Create(filename))
             {
                 writer.WriteStartDocument();
                 writer.WriteStartElement("NeuralNet");
                 writer.WriteStartElement("Meta");
-                writer.WriteElementString("Dimensions", dimensions.ToString());
+                writer.WriteElementString("Width", drinksSelfOrganizingMap.NeuralMapHeight.ToString());
+                writer.WriteElementString("Height", drinksSelfOrganizingMap.NeuralMapHeight.ToString());
+                writer.WriteElementString("DistanceBetweenNeurons", drinksSelfOrganizingMap.DistanceBetweenNeurons.ToString());
                 writer.WriteEndElement();
 
                 writer.WriteStartElement("Data");
 
 
                 StringBuilder sb = new StringBuilder();
-                foreach (Node node in nodes)
+                foreach (Node node in drinksSelfOrganizingMap.NeuralNet)
                 {
                     writer.WriteStartElement("Node");
                     writer.WriteElementString("DrinkID", node.DrinkID.ToString());

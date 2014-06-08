@@ -171,7 +171,7 @@
             this.webBrowserDrinks.Name = "webBrowserDrinks";
             this.webBrowserDrinks.Size = new System.Drawing.Size(683, 610);
             this.webBrowserDrinks.TabIndex = 5;
-            this.webBrowserDrinks.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webBrowser1_DocumentCompleted);
+            this.webBrowserDrinks.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webBrowserDrinks_DocumentCompleted);
             this.webBrowserDrinks.Navigating += new System.Windows.Forms.WebBrowserNavigatingEventHandler(this.webBrowserDrinks_Navigating);
             // 
             // btn_FindSimilar
@@ -182,6 +182,7 @@
             this.btn_FindSimilar.TabIndex = 6;
             this.btn_FindSimilar.Text = "Find similar";
             this.btn_FindSimilar.UseVisualStyleBackColor = true;
+            this.btn_FindSimilar.Click += new System.EventHandler(this.btn_FindSimilar_Click);
             // 
             // MainForm
             // 

@@ -5,8 +5,9 @@ using System.Text;
 using DrinksAdvisorSOM.Models;
 using System.Threading;
 using System.Diagnostics;
+using DrinksAdvisorSOM.NeuralNet.Structure;
 
-namespace DrinksAdvisorSOM.NeuralNet
+namespace DrinksAdvisorSOM.NeuralNet.Learning
 {
     class NeuralNetTeacher
     {
@@ -36,7 +37,7 @@ namespace DrinksAdvisorSOM.NeuralNet
             processorsCount = Environment.ProcessorCount;
         }
         
-        public Node[] GetLearnedNeuralNet()
+        public DrinksSelfOrganizingMap GetLearnedNeuralNet()
         {
             //Node[] neuralNet = InitializeNodes(drinksArray);
             Node[] neuralNet = InitializeNodes(drinksArray[0].FeaturesArray.Length);
@@ -54,7 +55,7 @@ namespace DrinksAdvisorSOM.NeuralNet
 
             }
 
-            return neuralNet;
+            return new DrinksSelfOrganizingMap(neuralNet, neuralMapWidth, neuralMapHeight, distanceBetweenNeurons);
 
         }
 

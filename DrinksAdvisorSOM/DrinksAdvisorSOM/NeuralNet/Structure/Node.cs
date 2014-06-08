@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace DrinksAdvisorSOM.NeuralNet
+namespace DrinksAdvisorSOM.NeuralNet.Structure
 {
     class Node
     {

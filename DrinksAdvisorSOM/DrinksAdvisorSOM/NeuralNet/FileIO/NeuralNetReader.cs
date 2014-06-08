@@ -3,20 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using DrinksAdvisorSOM.NeuralNet.Structure;
 
 namespace DrinksAdvisorSOM.NeuralNet.FileIO
 {
     class NeuralNetReader
     {
-        public IEnumerable<Node> LoadNodes(string filename)
+        public DrinksSelfOrganizingMap LoadNeuralNet(string filename)
         {
             List<Node> list_nodes = new List<Node>();
             XElement root = XElement.Load(filename);
 
-            XElement xdimensionsCount = (from el in root.Elements("Meta")
-                                         select el.Element("Dimensions")).First();
+            XElement xWidth = (from el in root.Elements("Meta")
+                                         select el.Element("Width")).First();
+            int width = int.Parse(xWidth.Value.Trim());
 
-            int dimensionsCount = int.Parse(xdimensionsCount.Value.Trim());
+            XElement xHeight = (from el in root.Elements("Meta")
+                               select el.Element("Height")).First();
+            int height = int.Parse(xWidth.Value.Trim());
+
+            XElement xDistance = (from el in root.Elements("Meta")
+                                  select el.Element("DistanceBetweenNeurons")).First();
+            int distance = int.Parse(xWidth.Value.Trim());
+
 
             IEnumerable<XElement> xnodes = from el in root.Descendants("Data").Elements()
                                            select el;
@@ -50,7 +59,7 @@ namespace DrinksAdvisorSOM.NeuralNet.FileIO
                 list_nodes.Add(new Node(weights, float.Parse(X.Value), float.Parse(Y.Value), drinkID));
             }
 
-            return list_nodes;
+            return new DrinksSelfOrganizingMap(list_nodes.ToArray(), width, height, distance);
 
         }
     }

@@ -60,14 +60,15 @@
     </Compile>
     <Compile Include="Models\Drink.cs" />
     <Compile Include="Models\DrinksContainer.cs" />
-    <Compile Include="NeuralNet\DrinksSelfOrganizingMap.cs" />
+    <Compile Include="NeuralNet\DrinksSelfOrganizingMapController.cs" />
     <Compile Include="NeuralNet\FileIO\DrinksReader.cs" />
     <Compile Include="NeuralNet\FileIO\NeuralNetReader.cs" />
     <Compile Include="NeuralNet\FileIO\NeuralNetWriter.cs" />
-    <Compile Include="NeuralNet\INeuralNet.cs" />
-    <Compile Include="NeuralNet\NeuralNetRenderer.cs" />
-    <Compile Include="NeuralNet\NeuralNetTeacher.cs" />
-    <Compile Include="NeuralNet\Node.cs" />
+    <Compile Include="NeuralNet\IDrinksSelfOrganizingMapController.cs" />
+    <Compile Include="NeuralNet\Rendering\NeuralNetRenderer.cs" />
+    <Compile Include="NeuralNet\Learning\NeuralNetTeacher.cs" />
+    <Compile Include="NeuralNet\Structure\DrinksSelfOrganizingMap.cs" />
+    <Compile Include="NeuralNet\Structure\Node.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Forms\Auxiliaries\NeuralNetLearningParametersForm.resx">
