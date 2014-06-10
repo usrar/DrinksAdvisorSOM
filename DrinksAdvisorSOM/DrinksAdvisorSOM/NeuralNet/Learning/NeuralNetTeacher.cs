@@ -6,6 +6,7 @@ using DrinksAdvisorSOM.Models;
 using System.Threading;
 using System.Diagnostics;
 using DrinksAdvisorSOM.NeuralNet.Structure;
+using DrinksAdvisorSOM.Extensions;
 
 namespace DrinksAdvisorSOM.NeuralNet.Learning
 {
@@ -69,7 +70,7 @@ namespace DrinksAdvisorSOM.NeuralNet.Learning
 
             }
 
-            neuralNet = ComputeNearestDrinks(neuralNet);
+            //neuralNet = ComputeNearestDrinks(neuralNet);
             Tuple<double, double> vectorQuantizationError = GetVectorQuantizationError(neuralNet);
             return new DrinksSelfOrganizingMap(neuralNet, neuralMapWidth, neuralMapHeight, distanceBetweenNeurons, vectorQuantizationError.Item1, vectorQuantizationError.Item2);
         }

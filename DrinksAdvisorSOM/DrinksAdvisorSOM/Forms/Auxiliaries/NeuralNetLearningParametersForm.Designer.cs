@@ -29,10 +29,6 @@
         private void InitializeComponent()
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.lbl_MinimumNeuronPotential = new System.Windows.Forms.Label();
-            this.tb_MinNeuronPotential = new System.Windows.Forms.TextBox();
-            this.lbl_NeuralMapHeight = new System.Windows.Forms.Label();
-            this.tb_NeuralMapHeight = new System.Windows.Forms.TextBox();
             this.lbl_NeuralMapWidth = new System.Windows.Forms.Label();
             this.tb_NeuralMapWidth = new System.Windows.Forms.TextBox();
             this.lbl_DistanceBetweenNeurons = new System.Windows.Forms.Label();
@@ -41,11 +37,15 @@
             this.lbl_EpochsCount = new System.Windows.Forms.Label();
             this.tb_EpochsCount = new System.Windows.Forms.TextBox();
             this.tb_DistanceBetweenNeurons = new System.Windows.Forms.TextBox();
+            this.lbl_MaxNeuronRestTime = new System.Windows.Forms.Label();
+            this.tb_MaxNeuronRestTime = new System.Windows.Forms.TextBox();
+            this.tb_MinNeuronPotential = new System.Windows.Forms.TextBox();
+            this.lbl_MinimumNeuronPotential = new System.Windows.Forms.Label();
+            this.tb_NeuralMapHeight = new System.Windows.Forms.TextBox();
+            this.lbl_NeuralMapHeight = new System.Windows.Forms.Label();
             this.tlp_FromActions = new System.Windows.Forms.TableLayoutPanel();
             this.btn_Cancel = new System.Windows.Forms.Button();
             this.btn_OK = new System.Windows.Forms.Button();
-            this.lbl_MaxNeuronRestTime = new System.Windows.Forms.Label();
-            this.tb_MaxNeuronRestTime = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.tlp_FromActions.SuspendLayout();
             this.SuspendLayout();
@@ -81,42 +81,6 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(336, 383);
             this.tableLayoutPanel1.TabIndex = 0;
-            // 
-            // lbl_MinimumNeuronPotential
-            // 
-            this.lbl_MinimumNeuronPotential.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.lbl_MinimumNeuronPotential.AutoSize = true;
-            this.lbl_MinimumNeuronPotential.Location = new System.Drawing.Point(20, 290);
-            this.lbl_MinimumNeuronPotential.Name = "lbl_MinimumNeuronPotential";
-            this.lbl_MinimumNeuronPotential.Size = new System.Drawing.Size(127, 13);
-            this.lbl_MinimumNeuronPotential.TabIndex = 11;
-            this.lbl_MinimumNeuronPotential.Text = "Minimum neuron potential";
-            // 
-            // tb_MinNeuronPotential
-            // 
-            this.tb_MinNeuronPotential.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.tb_MinNeuronPotential.Location = new System.Drawing.Point(153, 287);
-            this.tb_MinNeuronPotential.Name = "tb_MinNeuronPotential";
-            this.tb_MinNeuronPotential.Size = new System.Drawing.Size(180, 20);
-            this.tb_MinNeuronPotential.TabIndex = 10;
-            // 
-            // lbl_NeuralMapHeight
-            // 
-            this.lbl_NeuralMapHeight.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.lbl_NeuralMapHeight.AutoSize = true;
-            this.lbl_NeuralMapHeight.Location = new System.Drawing.Point(51, 236);
-            this.lbl_NeuralMapHeight.Name = "lbl_NeuralMapHeight";
-            this.lbl_NeuralMapHeight.Size = new System.Drawing.Size(96, 13);
-            this.lbl_NeuralMapHeight.TabIndex = 9;
-            this.lbl_NeuralMapHeight.Text = "Neural map height:";
-            // 
-            // tb_NeuralMapHeight
-            // 
-            this.tb_NeuralMapHeight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.tb_NeuralMapHeight.Location = new System.Drawing.Point(153, 233);
-            this.tb_NeuralMapHeight.Name = "tb_NeuralMapHeight";
-            this.tb_NeuralMapHeight.Size = new System.Drawing.Size(180, 20);
-            this.tb_NeuralMapHeight.TabIndex = 8;
             // 
             // lbl_NeuralMapWidth
             // 
@@ -190,6 +154,60 @@
             this.tb_DistanceBetweenNeurons.Size = new System.Drawing.Size(180, 20);
             this.tb_DistanceBetweenNeurons.TabIndex = 5;
             // 
+            // lbl_MaxNeuronRestTime
+            // 
+            this.lbl_MaxNeuronRestTime.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.lbl_MaxNeuronRestTime.AutoSize = true;
+            this.lbl_MaxNeuronRestTime.Location = new System.Drawing.Point(42, 347);
+            this.lbl_MaxNeuronRestTime.Name = "lbl_MaxNeuronRestTime";
+            this.lbl_MaxNeuronRestTime.Size = new System.Drawing.Size(105, 13);
+            this.lbl_MaxNeuronRestTime.TabIndex = 12;
+            this.lbl_MaxNeuronRestTime.Text = "Max neuron rest time";
+            // 
+            // tb_MaxNeuronRestTime
+            // 
+            this.tb_MaxNeuronRestTime.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.tb_MaxNeuronRestTime.Location = new System.Drawing.Point(153, 343);
+            this.tb_MaxNeuronRestTime.Name = "tb_MaxNeuronRestTime";
+            this.tb_MaxNeuronRestTime.Size = new System.Drawing.Size(180, 20);
+            this.tb_MaxNeuronRestTime.TabIndex = 13;
+            // 
+            // tb_MinNeuronPotential
+            // 
+            this.tb_MinNeuronPotential.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.tb_MinNeuronPotential.Location = new System.Drawing.Point(153, 287);
+            this.tb_MinNeuronPotential.Name = "tb_MinNeuronPotential";
+            this.tb_MinNeuronPotential.Size = new System.Drawing.Size(180, 20);
+            this.tb_MinNeuronPotential.TabIndex = 10;
+            // 
+            // lbl_MinimumNeuronPotential
+            // 
+            this.lbl_MinimumNeuronPotential.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.lbl_MinimumNeuronPotential.AutoSize = true;
+            this.lbl_MinimumNeuronPotential.Location = new System.Drawing.Point(20, 290);
+            this.lbl_MinimumNeuronPotential.Name = "lbl_MinimumNeuronPotential";
+            this.lbl_MinimumNeuronPotential.Size = new System.Drawing.Size(127, 13);
+            this.lbl_MinimumNeuronPotential.TabIndex = 11;
+            this.lbl_MinimumNeuronPotential.Text = "Minimum neuron potential";
+            // 
+            // tb_NeuralMapHeight
+            // 
+            this.tb_NeuralMapHeight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.tb_NeuralMapHeight.Location = new System.Drawing.Point(153, 233);
+            this.tb_NeuralMapHeight.Name = "tb_NeuralMapHeight";
+            this.tb_NeuralMapHeight.Size = new System.Drawing.Size(180, 20);
+            this.tb_NeuralMapHeight.TabIndex = 8;
+            // 
+            // lbl_NeuralMapHeight
+            // 
+            this.lbl_NeuralMapHeight.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.lbl_NeuralMapHeight.AutoSize = true;
+            this.lbl_NeuralMapHeight.Location = new System.Drawing.Point(51, 236);
+            this.lbl_NeuralMapHeight.Name = "lbl_NeuralMapHeight";
+            this.lbl_NeuralMapHeight.Size = new System.Drawing.Size(96, 13);
+            this.lbl_NeuralMapHeight.TabIndex = 9;
+            this.lbl_NeuralMapHeight.Text = "Neural map height:";
+            // 
             // tlp_FromActions
             // 
             this.tlp_FromActions.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -232,24 +250,6 @@
             this.btn_OK.UseVisualStyleBackColor = true;
             this.btn_OK.Click += new System.EventHandler(this.btn_OK_Click);
             // 
-            // lbl_MaxNeuronRestTime
-            // 
-            this.lbl_MaxNeuronRestTime.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.lbl_MaxNeuronRestTime.AutoSize = true;
-            this.lbl_MaxNeuronRestTime.Location = new System.Drawing.Point(42, 347);
-            this.lbl_MaxNeuronRestTime.Name = "lbl_MaxNeuronRestTime";
-            this.lbl_MaxNeuronRestTime.Size = new System.Drawing.Size(105, 13);
-            this.lbl_MaxNeuronRestTime.TabIndex = 12;
-            this.lbl_MaxNeuronRestTime.Text = "Max neuron rest time";
-            // 
-            // tb_MaxNeuronRestTime
-            // 
-            this.tb_MaxNeuronRestTime.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.tb_MaxNeuronRestTime.Location = new System.Drawing.Point(153, 343);
-            this.tb_MaxNeuronRestTime.Name = "tb_MaxNeuronRestTime";
-            this.tb_MaxNeuronRestTime.Size = new System.Drawing.Size(180, 20);
-            this.tb_MaxNeuronRestTime.TabIndex = 13;
-            // 
             // NeuralNetLearningParametersForm
             // 
             this.AcceptButton = this.btn_OK;
@@ -259,6 +259,7 @@
             this.ClientSize = new System.Drawing.Size(360, 487);
             this.Controls.Add(this.tlp_FromActions);
             this.Controls.Add(this.tableLayoutPanel1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "NeuralNetLearningParametersForm";
             this.Text = "NeuralNetLearningParametersForm";
             this.Load += new System.EventHandler(this.NeuralNetLearningParametersForm_Load);

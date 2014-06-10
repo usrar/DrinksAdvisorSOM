@@ -22,7 +22,8 @@ namespace DrinksAdvisorSOM.NeuralNet
 
         public DrinksSelfOrganizingMapController()
         {
-            DrinksContainer = LoadTrainingSet(Properties.Resources.DrinksFeatures);
+            //DrinksContainer = LoadTrainingSet(Properties.Resources.DrinksFeatures);
+            DrinksContainer = LoadTrainingSet(Properties.Resources.traits_with_url);
             neuralNetRenderer = new NeuralNetRenderer();
         }
 

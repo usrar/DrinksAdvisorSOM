@@ -9,6 +9,9 @@ using System.Windows.Forms;
 using DrinksAdvisorSOM.Forms.Auxiliaries;
 using DrinksAdvisorSOM.NeuralNet;
 using DrinksAdvisorSOM.Models;
+using System.Net;
+using System.IO;
+using DrinksAdvisorSOM.Extensions;
 
 namespace DrinksAdvisorSOM.Forms
 {
@@ -18,6 +21,8 @@ namespace DrinksAdvisorSOM.Forms
         private bool isFilterEnabled;
         private string inputFilter;
         private string columnName;
+        private Dictionary<int, Image> drinksImagesDictionary;
+        private readonly Size SIMILAR_DRINK_IMAGE_SIZE = new Size(160, 160);
 
         public MainForm()
         {
@@ -29,8 +34,10 @@ namespace DrinksAdvisorSOM.Forms
             columnName = "DrinkName";
             dgv_Drinks.SelectionChanged += new EventHandler(dgv_Drinks_SelectionChanged);
             dgv_Drinks.CellDoubleClick += new DataGridViewCellEventHandler(dgv_Drinks_CellDoubleClick);
+            drinksImagesDictionary = new Dictionary<int, Image>();
 
             webBrowserDrinks.ScriptErrorsSuppressed = true;
+            InitializeListViewSimilarImages();
         }
 
  
@@ -61,6 +68,13 @@ namespace DrinksAdvisorSOM.Forms
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void InitializeListViewSimilarImages()
+        {
+            lv_SimilarDrinks.LargeImageList = new ImageList();
+            lv_SimilarDrinks.LargeImageList.ImageSize = SIMILAR_DRINK_IMAGE_SIZE;
+            lv_SimilarDrinks.LargeImageList.ColorDepth = ColorDepth.Depth32Bit;
         }
 
         private void saveNeuralNetToolStripMenuItem_Click(object sender, EventArgs e)
@@ -173,12 +187,42 @@ namespace DrinksAdvisorSOM.Forms
             try
             {
                 EnsureDrinksMapIsNotNull();
-                IEnumerable<Drink> similarDrinks = drinksMapController.FindSimilarDrinks(GetSelectedDrinkID(), 5);
+                SimilarDrinksCountInquiryForm parametersForm = new SimilarDrinksCountInquiryForm();
+                DialogResult parametersFormDialogResult = parametersForm.ShowDialog();
+
+                if (parametersFormDialogResult == System.Windows.Forms.DialogResult.OK)
+                {  
+                    int similarDrinksCount = parametersForm.SimilarDrinksCount;
+
+                    IEnumerable<Drink> similarDrinksCollection = drinksMapController.FindSimilarDrinks(GetSelectedDrinkID(), similarDrinksCount);
+                    RefreshListViewSimilarDrinks(similarDrinksCollection.ToArray());
+                }
+                
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void RefreshListViewSimilarDrinks(Drink[] similarDrinksArray)
+        {
+            lv_SimilarDrinks.BeginUpdate();
+
+            lv_SimilarDrinks.Items.Clear();
+            lv_SimilarDrinks.LargeImageList.Images.Clear();
+
+            for (int i = 0; i < similarDrinksArray.Length; i++)
+            {
+                lv_SimilarDrinks.LargeImageList.Images.Add(GetDrinkImage(similarDrinksArray[i]).ResizeImage(SIMILAR_DRINK_IMAGE_SIZE));
+                ListViewItem lvi = new ListViewItem(similarDrinksArray[i].Name);
+                lvi.Tag = similarDrinksArray[i].Url;
+                lvi.ImageIndex = i;
+
+                lv_SimilarDrinks.Items.Add(lvi);
+            }
+
+            lv_SimilarDrinks.EndUpdate();
         }
 
 
@@ -238,6 +282,53 @@ namespace DrinksAdvisorSOM.Forms
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+
+        private Image GetDrinkImage(Drink drink)
+        {
+            if (drinksImagesDictionary.ContainsKey(drink.ID))
+            {
+                return drinksImagesDictionary[drink.ID];
+            }
+            else
+            {
+                Image drinkImage = GetImageFromUrl(drink.ImageUrl);
+                drinksImagesDictionary.Add(drink.ID, drinkImage);
+                return drinkImage;
+            }
+        }
+
+
+        private Image GetImageFromUrl(string url)
+        {
+            HttpWebRequest httpWebRequest = (HttpWebRequest)HttpWebRequest.Create(url);
+
+            using (HttpWebResponse httpWebReponse = (HttpWebResponse)httpWebRequest.GetResponse())
+            {
+                using (Stream stream = httpWebReponse.GetResponseStream())
+                {
+                    return Image.FromStream(stream);
+                }
+            }
+        }
+
+        private void lv_SimilarDrinks_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (lv_SimilarDrinks.SelectedItems.Count > 0)
+                {
+                    ListViewItem lvi = lv_SimilarDrinks.SelectedItems[0];
+                    string drinkUrl = lvi.Tag.ToString();
+                    webBrowserDrinks.Navigate(drinkUrl);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
 
 
     }

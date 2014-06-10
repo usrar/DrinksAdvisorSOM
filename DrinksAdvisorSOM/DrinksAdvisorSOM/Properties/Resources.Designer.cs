@@ -61,12 +61,12 @@ namespace DrinksAdvisorSOM.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ID;Name;URL;Strength;Served;Difficulty;Bourbon / American Whiskey;Tequila;Gin;Liqueurs;Rye Whiskey;Vodka;Brandy / Cognac;Cachaça;Mezcal;Scotch;Rum;Irish Whiskey;Vermouth / Aperitif Wine;Canadian Whisky;Absinthe;Beer;Whiskey;Non-alcoholic;Pisco;Japanese Whisky;Salty/Savory;Sweet;Creamy;Spicy;Sour;Fruity/Citrus-forward;Spirit-forward;Bitter;Bubbly;Modern Classics;Classics;Martinis;Margaritas;Hot;Tiki / Tropical;Punches;Frozen / Blended;Shots;Non-Alcoholic;Stirred;Shaken;Blended;Cooked/Heated
-        ///0;Green Margarit [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to ID;Name;URL;Img;Strength;Served;Difficulty;Bourbon / American Whiskey;Tequila;Gin;Liqueurs;Rye Whiskey;Vodka;Brandy / Cognac;CachaĂ§a;Mezcal;Scotch;Rum;Irish Whiskey;Vermouth / Aperitif Wine;Canadian Whisky;Absinthe;Beer;Whiskey;Non-alcoholic;Pisco;Japanese Whisky;Salty/Savory;Sweet;Creamy;Spicy;Sour;Fruity/Citrus-forward;Spirit-forward;Bitter;Bubbly;Modern Classics;Classics;Martinis;Margaritas;Hot;Tiki / Tropical;Punches;Frozen / Blended;Shots;Non-Alcoholic;Stirred;Shaken;Blended;Cooked/Heated;
+        ///0;Green Ma [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string DrinksFeatures {
+        internal static string traits_with_url {
             get {
-                return ResourceManager.GetString("DrinksFeatures", resourceCulture);
+                return ResourceManager.GetString("traits_with_url", resourceCulture);
             }
         }
     }

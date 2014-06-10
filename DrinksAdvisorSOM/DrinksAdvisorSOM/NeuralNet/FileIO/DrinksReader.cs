@@ -9,7 +9,7 @@ namespace DrinksAdvisorSOM.NeuralNet.FileIO
 {
     class DrinksReader
     {
-        private const int COLUMNS_TO_SKIP = 3;
+        private const int COLUMNS_TO_SKIP = 4;
 
         public DrinksContainer LoadDrinks(string source)
         {
@@ -26,16 +26,17 @@ namespace DrinksAdvisorSOM.NeuralNet.FileIO
                     string[] values = line.Split(';');
                     int id = int.Parse(values[0]);
                     string drinkName = values[1],
-                           url = values[2];
+                           url = values[2],
+                           imageUrl = values[3];
 
                     double[] trainingRow = new double[values.Length - COLUMNS_TO_SKIP];
 
                     for (int i = 0; i < trainingRow.Length - 1; i++)
                     {
-                        trainingRow[i] = double.Parse(values[i + COLUMNS_TO_SKIP], System.Globalization.CultureInfo.InvariantCulture);
+                        trainingRow[i] = double.Parse(values[i + COLUMNS_TO_SKIP], System.Globalization.CultureInfo.InvariantCulture);                                                
                     }
 
-                    trainingSet.Add(new Drink(id, drinkName, url, trainingRow));
+                    trainingSet.Add(new Drink(id, drinkName, url, trainingRow, imageUrl));
                 }
 
                 return new DrinksContainer(trainingSet.ToDictionary(r => r.ID, r => r), columnNames);
