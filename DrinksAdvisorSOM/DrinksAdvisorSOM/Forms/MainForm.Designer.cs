@@ -33,6 +33,8 @@
             this.learnNeuralNetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveNeuralNetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openNeuralNetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.imagingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.getRenderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.ts_lbl_Status = new System.Windows.Forms.ToolStripStatusLabel();
             this.dgv_Drinks = new System.Windows.Forms.DataGridView();
@@ -43,8 +45,8 @@
             this.lbl_FilterInput = new System.Windows.Forms.Label();
             this.webBrowserDrinks = new System.Windows.Forms.WebBrowser();
             this.btn_FindSimilar = new System.Windows.Forms.Button();
-            this.imagingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.getRenderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.statisticsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.vectorQuantizationErrorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Drinks)).BeginInit();
@@ -54,7 +56,8 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.imagingToolStripMenuItem});
+            this.imagingToolStripMenuItem,
+            this.statisticsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(984, 24);
@@ -91,6 +94,21 @@
             this.openNeuralNetToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
             this.openNeuralNetToolStripMenuItem.Text = "Open neural net";
             this.openNeuralNetToolStripMenuItem.Click += new System.EventHandler(this.openNeuralNetToolStripMenuItem_Click);
+            // 
+            // imagingToolStripMenuItem
+            // 
+            this.imagingToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.getRenderToolStripMenuItem});
+            this.imagingToolStripMenuItem.Name = "imagingToolStripMenuItem";
+            this.imagingToolStripMenuItem.Size = new System.Drawing.Size(63, 20);
+            this.imagingToolStripMenuItem.Text = "Imaging";
+            // 
+            // getRenderToolStripMenuItem
+            // 
+            this.getRenderToolStripMenuItem.Name = "getRenderToolStripMenuItem";
+            this.getRenderToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.getRenderToolStripMenuItem.Text = "Get render";
+            this.getRenderToolStripMenuItem.Click += new System.EventHandler(this.getRenderToolStripMenuItem_Click);
             // 
             // statusStrip1
             // 
@@ -187,20 +205,20 @@
             this.btn_FindSimilar.UseVisualStyleBackColor = true;
             this.btn_FindSimilar.Click += new System.EventHandler(this.btn_FindSimilar_Click);
             // 
-            // imagingToolStripMenuItem
+            // statisticsToolStripMenuItem
             // 
-            this.imagingToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.getRenderToolStripMenuItem});
-            this.imagingToolStripMenuItem.Name = "imagingToolStripMenuItem";
-            this.imagingToolStripMenuItem.Size = new System.Drawing.Size(63, 20);
-            this.imagingToolStripMenuItem.Text = "Imaging";
+            this.statisticsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.vectorQuantizationErrorToolStripMenuItem});
+            this.statisticsToolStripMenuItem.Name = "statisticsToolStripMenuItem";
+            this.statisticsToolStripMenuItem.Size = new System.Drawing.Size(65, 20);
+            this.statisticsToolStripMenuItem.Text = "Statistics";
             // 
-            // getRenderToolStripMenuItem
+            // vectorQuantizationErrorToolStripMenuItem
             // 
-            this.getRenderToolStripMenuItem.Name = "getRenderToolStripMenuItem";
-            this.getRenderToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.getRenderToolStripMenuItem.Text = "Get render";
-            this.getRenderToolStripMenuItem.Click += new System.EventHandler(this.getRenderToolStripMenuItem_Click);
+            this.vectorQuantizationErrorToolStripMenuItem.Name = "vectorQuantizationErrorToolStripMenuItem";
+            this.vectorQuantizationErrorToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.vectorQuantizationErrorToolStripMenuItem.Text = "Vector quantization error";
+            this.vectorQuantizationErrorToolStripMenuItem.Click += new System.EventHandler(this.vectorQuantizationErrorToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -246,6 +264,8 @@
         private System.Windows.Forms.Button btn_FindSimilar;
         private System.Windows.Forms.ToolStripMenuItem imagingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem getRenderToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem statisticsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem vectorQuantizationErrorToolStripMenuItem;
     }
 }
 

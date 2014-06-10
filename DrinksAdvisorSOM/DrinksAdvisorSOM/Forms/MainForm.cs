@@ -14,7 +14,7 @@ namespace DrinksAdvisorSOM.Forms
 {
     public partial class MainForm : Form
     {
-        private IDrinksSelfOrganizingMapController drinksMap;
+        private IDrinksSelfOrganizingMapController drinksMapController;
         private bool isFilterEnabled;
         private string inputFilter;
         private string columnName;
@@ -43,16 +43,17 @@ namespace DrinksAdvisorSOM.Forms
                 DialogResult parametersFormResult = parametersForm.ShowDialog();
                 if( parametersFormResult == System.Windows.Forms.DialogResult.OK)
                 {
-                    drinksMap = new DrinksSelfOrganizingMapController();
+                    drinksMapController = new DrinksSelfOrganizingMapController();
 
                     System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
                     sw.Start();
-                    drinksMap.LearnNeuralNet(parametersForm.EpochsCount, parametersForm.InitialLearningRate, parametersForm.DistanceBetweenNeurons, parametersForm.NeuralMapWidth, parametersForm.NeuralMapHeight);
+                    drinksMapController.LearnNeuralNet(parametersForm.EpochsCount, parametersForm.InitialLearningRate, parametersForm.DistanceBetweenNeurons,
+                        parametersForm.NeuralMapWidth, parametersForm.NeuralMapHeight, parametersForm.MinNeuronPotential, parametersForm.MaxNeuronRestTime);
                     sw.Stop();
                     Console.WriteLine("Elapsed time: " + sw.ElapsedMilliseconds / 1000.0f);
                     ts_lbl_Status.Text = "Elapsed time: " + sw.ElapsedMilliseconds / 1000.0f;
 
-                    RefreshDrinksTable(drinksMap.GetDrinksContainer());
+                    RefreshDrinksTable(drinksMapController.GetDrinksContainer());
                 }
 
             }
@@ -73,7 +74,7 @@ namespace DrinksAdvisorSOM.Forms
                 DialogResult saveFileDialogResult = saveFileDialog.ShowDialog();
                 if (saveFileDialogResult == DialogResult.OK)
                 {
-                    drinksMap.SaveNeuralNet(saveFileDialog.FileName);
+                    drinksMapController.SaveNeuralNet(saveFileDialog.FileName);
                 }
             }
             catch (Exception ex)
@@ -92,9 +93,9 @@ namespace DrinksAdvisorSOM.Forms
                 string filename = openFileDialog.FileName;
                 try
                 {
-                    drinksMap = new DrinksSelfOrganizingMapController();
-                    drinksMap.LoadNeuralNet(filename);
-                    RefreshDrinksTable(drinksMap.GetDrinksContainer());
+                    drinksMapController = new DrinksSelfOrganizingMapController();
+                    drinksMapController.LoadNeuralNet(filename);
+                    RefreshDrinksTable(drinksMapController.GetDrinksContainer());
 
                 }
                 catch (Exception ex)
@@ -172,7 +173,7 @@ namespace DrinksAdvisorSOM.Forms
             try
             {
                 EnsureDrinksMapIsNotNull();
-                IEnumerable<Drink> similarDrinks = drinksMap.FindSimilarDrinks(GetSelectedDrinkID(), 5);
+                IEnumerable<Drink> similarDrinks = drinksMapController.FindSimilarDrinks(GetSelectedDrinkID(), 5);
             }
             catch (Exception ex)
             {
@@ -183,7 +184,7 @@ namespace DrinksAdvisorSOM.Forms
 
         private void EnsureDrinksMapIsNotNull()
         {
-            if (drinksMap == null)
+            if (drinksMapController == null)
                 throw new Exception("Try to load neural net first.");
         }
 
@@ -210,11 +211,30 @@ namespace DrinksAdvisorSOM.Forms
                 DialogResult saveFileDialogResult = saveFileDialog.ShowDialog();
                 if (saveFileDialogResult == DialogResult.OK)
                 {
-                    drinksMap.GetRender().Save(saveFileDialog.FileName);
+                    drinksMapController.GetRender().Save(saveFileDialog.FileName);
                 }
             }
             catch (Exception ex)
             {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void vectorQuantizationErrorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                EnsureDrinksMapIsNotNull();
+
+                Tuple<double, double> vectorQuantizationError = drinksMapController.GetVectorQuantizationError();
+
+                MessageBox.Show("Error = " + vectorQuantizationError.Item1 + "\n" +
+                                "Standard deviation = " + vectorQuantizationError.Item2,
+                                "Vector Quantization Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }

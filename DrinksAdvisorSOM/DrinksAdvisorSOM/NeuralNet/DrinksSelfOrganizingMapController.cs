@@ -45,9 +45,11 @@ namespace DrinksAdvisorSOM.NeuralNet
             return DrinksContainer;
         }
 
-        public void LearnNeuralNet(int epochsCount, double initialLearningRate, float distanceBetweenNeurons, int neuralMapWidth, int neuralMapHeight)
+        public void LearnNeuralNet(int epochsCount, double initialLearningRate, float distanceBetweenNeurons, int neuralMapWidth,
+            int neuralMapHeight, double minNeuronPotential, int maxNeuronRestTime)
         {
-            NeuralNetTeacher learner = new NeuralNetTeacher(DrinksContainer.DrinksDictionary.Values.ToArray(), epochsCount, initialLearningRate, distanceBetweenNeurons, neuralMapWidth, neuralMapHeight);
+            NeuralNetTeacher learner = new NeuralNetTeacher(DrinksContainer.DrinksDictionary, epochsCount, initialLearningRate,
+                distanceBetweenNeurons, neuralMapWidth, neuralMapHeight, DrinksContainer.FeaturesCount, minNeuronPotential, maxNeuronRestTime);
             drinksMap = learner.GetLearnedNeuralNet();
         }
 
@@ -117,18 +119,26 @@ namespace DrinksAdvisorSOM.NeuralNet
         }
 
 
+        public Tuple<double, double> GetVectorQuantizationError()
+        {
+            EnsureDrinksMapIsNotNull();
+            return new Tuple<double, double>(drinksMap.VectorQuantizationError, drinksMap.VectorQuantizationErrorStandardDeviation);
+        }
+
+
         private DrinksContainer LoadTrainingSet(string filename)
         {
             DrinksReader reader = new DrinksReader();
             return reader.LoadDrinks(filename);
         }
 
-        
 
         private void EnsureDrinksMapIsNotNull()
         {
             if (drinksMap == null)
                 throw new Exception("There's no drinks map.");
         }
+
+        
     }
 }

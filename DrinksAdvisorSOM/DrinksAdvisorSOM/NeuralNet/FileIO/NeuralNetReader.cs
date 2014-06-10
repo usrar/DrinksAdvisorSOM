@@ -27,6 +27,16 @@ namespace DrinksAdvisorSOM.NeuralNet.FileIO
             int distance = int.Parse(xDistance.Value.Trim());
 
 
+            XElement xVectorQuantizationError = (from el in root.Elements("Meta")
+                                                 select el.Element("VectorQuantizationError")).First();
+            double vectorQuantizationError = double.Parse(xVectorQuantizationError.Value.Trim());
+
+
+            XElement xVectorQuantizationErrorStandardDeviation = (from el in root.Elements("Meta")
+                                                                  select el.Element("VectorQuantizationErrorStandardDeviation")).First();
+            double vectorQuantizationErrorStandardDeviation = double.Parse(xVectorQuantizationErrorStandardDeviation.Value.Trim());
+
+
             IEnumerable<XElement> xnodes = from el in root.Descendants("Data").Elements()
                                            select el;
 
@@ -59,7 +69,7 @@ namespace DrinksAdvisorSOM.NeuralNet.FileIO
                 list_nodes.Add(new Node(weights, float.Parse(X.Value), float.Parse(Y.Value), drinkID));
             }
 
-            return new DrinksSelfOrganizingMap(list_nodes.ToArray(), width, height, distance);
+            return new DrinksSelfOrganizingMap(list_nodes.ToArray(), width, height, distance, vectorQuantizationError, vectorQuantizationErrorStandardDeviation);
 
         }
     }

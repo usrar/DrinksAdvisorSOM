@@ -13,25 +13,38 @@ namespace DrinksAdvisorSOM.NeuralNet.Learning
     {
         private int epochsCount,
                     neuralMapWidth,
-                    neuralMapHeight;
-        private double initialLearningRate;
+                    neuralMapHeight,
+                    featuresCount;
+
+        private double initialLearningRate,
+                       maxNeuronRestTimeInv;
+
+        private static double _minNeuronPotential;
+
         private float distanceBetweenNeurons;
+        private Dictionary<int,Drink> drinksDictionary;
         private Drink[] drinksArray;
         private Random randomizer;
         protected int processorsCount;
 
+        protected static double[] potentialsArray;
+
         private const double RANDOM_WEIGHTS_SCALE_FACTOR = 1;
 
 
-        public NeuralNetTeacher(Drink[] drinksArray, int epochsCount, double initialLearningRate,
-            float distanceBetweenNeurons, int neuralMapWidth, int neuralMapHeight)
+        public NeuralNetTeacher(Dictionary<int,Drink> drinksDictionary, int epochsCount, double initialLearningRate,
+            float distanceBetweenNeurons, int neuralMapWidth, int neuralMapHeight, int featuresCount, double minNeuronPotential, int maxNeuronRestTime)
         {
-            this.drinksArray = drinksArray;
+            this.drinksDictionary = drinksDictionary;
+            this.drinksArray = drinksDictionary.Values.ToArray();
             this.epochsCount = epochsCount;
             this.initialLearningRate = initialLearningRate;
             this.neuralMapWidth = neuralMapWidth;
             this.neuralMapHeight = neuralMapHeight;
             this.distanceBetweenNeurons = distanceBetweenNeurons;
+            this.featuresCount = featuresCount;
+            _minNeuronPotential = minNeuronPotential;
+            this.maxNeuronRestTimeInv = 1 / (double)maxNeuronRestTime;
 
             randomizer = new Random();
             processorsCount = Environment.ProcessorCount;
@@ -39,8 +52,9 @@ namespace DrinksAdvisorSOM.NeuralNet.Learning
         
         public DrinksSelfOrganizingMap GetLearnedNeuralNet()
         {
-            //Node[] neuralNet = InitializeNodes(drinksArray);
-            Node[] neuralNet = InitializeNodes(drinksArray[0].FeaturesArray.Length);
+            Node[] neuralNet = InitializeNodes(featuresCount);
+            potentialsArray = InitializePotentialsArray(neuralNet.Length);
+
             List<Drink> trainingData = drinksArray.ToList();
 
             for (int i = 0; i < epochsCount; i++)
@@ -55,8 +69,56 @@ namespace DrinksAdvisorSOM.NeuralNet.Learning
 
             }
 
-            return new DrinksSelfOrganizingMap(neuralNet, neuralMapWidth, neuralMapHeight, distanceBetweenNeurons);
+            neuralNet = ComputeNearestDrinks(neuralNet);
+            Tuple<double, double> vectorQuantizationError = GetVectorQuantizationError(neuralNet);
+            return new DrinksSelfOrganizingMap(neuralNet, neuralMapWidth, neuralMapHeight, distanceBetweenNeurons, vectorQuantizationError.Item1, vectorQuantizationError.Item2);
+        }
 
+
+        private double[] InitializePotentialsArray(int size)
+        {
+            double[] potentialsArray = new double[size];
+            for (int i = 0; i < size; i++)
+            {
+                potentialsArray[i] = _minNeuronPotential;
+            }
+
+            return potentialsArray;
+        }
+
+        private Node[] ComputeNearestDrinks(Node[] neuralNet)
+        {
+            int counter = 0;
+
+            foreach (Node node in neuralNet)
+            {
+                int nearestDrinkID = GetNearestDrink(node.Weights);
+
+                if (nearestDrinkID != node.DrinkID)
+                {
+                    node.DrinkID = nearestDrinkID;
+                    counter++;
+                }
+            }
+            return neuralNet;
+        }
+
+        private int GetNearestDrink(double[] nodeWeights)
+        {
+            int drinkID = 0;
+            double bestDistance = double.MaxValue;
+
+            for (int i = 0; i < drinksArray.Length; i++)
+            {
+                double tempDistance = nodeWeights.GetDistance(drinksArray[i].FeaturesArray);
+                if (tempDistance < bestDistance)
+                {
+                    bestDistance = tempDistance;
+                    drinkID = drinksArray[i].ID;
+                }
+            }
+
+            return drinkID;
         }
 
 
@@ -112,16 +174,17 @@ namespace DrinksAdvisorSOM.NeuralNet.Learning
         private Node[] Epoch(int t, Drink inputDrink, Node[] nodesArray)
         {
             BestMatchingNodeMultiThreadedSearcher bestMatchingNodeMultiThreadedSearcher = new BestMatchingNodeMultiThreadedSearcher(nodesArray, processorsCount, inputDrink.FeaturesArray);
-            Node winningNode = bestMatchingNodeMultiThreadedSearcher.GetBestMatchingNode();
+            int winningNodeIndex = bestMatchingNodeMultiThreadedSearcher.GetBestMatchingNodeIndex();
 
             double neighbourhoodRadius = Radius(t);
             double learningRate = LearningRate(t);
 
-
+            potentialsArray[winningNodeIndex] -= (_minNeuronPotential + maxNeuronRestTimeInv);
+            UpdatePotentialsArray(maxNeuronRestTimeInv);
             
             System.Threading.Tasks.Parallel.ForEach(nodesArray, node =>
                 {
-                    double theta = Theta(t, winningNode, node, neighbourhoodRadius);
+                    double theta = Theta(t, nodesArray[winningNodeIndex], node, neighbourhoodRadius);
 
                     if (theta > 0)
                     {
@@ -135,20 +198,31 @@ namespace DrinksAdvisorSOM.NeuralNet.Learning
         }
 
 
+        private void UpdatePotentialsArray(double value)
+        {
+            for (int i = 0; i < potentialsArray.Length; i++)
+            {
+                potentialsArray[i] += value;
+                if (potentialsArray[i] > 1)
+                    potentialsArray[i] = 1;
+            }
+        }
+
+
 
         private class BestMatchingNodeMultiThreadedSearcher
         {
-            private Tuple<Node, double>[] bestMatchingNodes;
+            private Tuple<int, double>[] bestMatchingNodes;
             private int processorsCount;
 
             public BestMatchingNodeMultiThreadedSearcher(Node[] neuralNet, int processorsCount, double[] inputVector)
             {
                 this.processorsCount = processorsCount;
-                bestMatchingNodes = new Tuple<Node,double>[processorsCount];
+                bestMatchingNodes = new Tuple<int,double>[processorsCount];
                 FindBestMatchingNodes(neuralNet, inputVector);
             }
 
-            
+
 
             private void FindBestMatchingNodes(Node[] neuralNet, double[] inputVector)
             {
@@ -191,58 +265,42 @@ namespace DrinksAdvisorSOM.NeuralNet.Learning
 
             private void FindBestMatchingNodeThread(Node[] neuralNet, int startIndex, int endIndex, int threadIndex, double[] inputVector)
             {
-                Node bestMatchingNode = null;
+                int bestMatchingNodeIndex = 0;
                 double bestDistance = double.MaxValue;
 
 
                 for(int i = startIndex; i < endIndex; i++)
                 {
-                    double distance = GetDistance(neuralNet[i].Weights, inputVector);
-                    if (distance < bestDistance)
+                    double distance = neuralNet[i].Weights.GetDistance(inputVector);
+                    if (distance < bestDistance && potentialsArray[i] > _minNeuronPotential)
                     {
                         bestDistance = distance;
-                        bestMatchingNode = neuralNet[i];
+                        bestMatchingNodeIndex = i;
                     }
                 }
 
-                bestMatchingNodes[threadIndex] = new Tuple<Node, double>(bestMatchingNode, bestDistance);
+                bestMatchingNodes[threadIndex] = new Tuple<int, double>(bestMatchingNodeIndex, bestDistance);
             }
 
-            private double GetDistance(double[] weights, double[] inputVector)
+            public int GetBestMatchingNodeIndex()
             {
-                double distance = 0;
-
-                for (int i = 0; i < weights.Length; i++)
-                {
-                    distance += (inputVector[i] - weights[i]) * (inputVector[i] - weights[i]);
-                }
-
-                return Math.Sqrt(distance);
-            }
-
-
-            public Node GetBestMatchingNode()
-            {
-                Node bestMatchingNode = null;
+                int bestMatchingNodeIndex = 0;
                 double bestDistance = double.MaxValue;
 
                 for (int i = 0; i < bestMatchingNodes.Length; i++)
                 {
                     if (bestMatchingNodes[i].Item2 < bestDistance)
                     {
-                        bestMatchingNode = bestMatchingNodes[i].Item1;
+                        bestMatchingNodeIndex = bestMatchingNodes[i].Item1;
                         bestDistance = bestMatchingNodes[i].Item2;
                     }
                 }
 
-                return bestMatchingNode;
+                return bestMatchingNodeIndex;
             }
 
         }
-
-
-
-   
+  
 
         private double Radius(int t)
         {
@@ -265,6 +323,19 @@ namespace DrinksAdvisorSOM.NeuralNet.Learning
                 return 0;
 
             return Math.Exp(-distSqr / (2 * radius * radius));
+        }
+
+
+        // item1 - error average, item 2 - stddev
+        private Tuple<double, double> GetVectorQuantizationError(Node[] neuralNet)
+        {   
+            double[] nodeErrorArray = new double[neuralNet.Length];
+            for (int i = 0; i < nodeErrorArray.Length; i++)
+            {
+                nodeErrorArray[i] = neuralNet[i].Weights.GetSquareDistance(drinksDictionary[neuralNet[i].DrinkID].FeaturesArray);
+            }
+
+            return new Tuple<double,double>(nodeErrorArray.Average(), nodeErrorArray.StandardDeviation());
         }
     }
 }

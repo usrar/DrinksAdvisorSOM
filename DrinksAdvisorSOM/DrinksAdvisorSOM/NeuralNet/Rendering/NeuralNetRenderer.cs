@@ -23,18 +23,23 @@ namespace DrinksAdvisorSOM.NeuralNet.Rendering
         public Image GetRender(DrinksSelfOrganizingMap drinksMap)
         {
 
-            Bitmap render = new Bitmap((int)(drinksMap.NeuralMapWidth * SCALE_FACTOR), (int)(drinksMap.NeuralMapHeight * SCALE_FACTOR));
+            Bitmap render = new Bitmap((int)(drinksMap.NeuralMapWidth * drinksMap.DistanceBetweenNeurons * SCALE_FACTOR), (int)(drinksMap.NeuralMapHeight * drinksMap.DistanceBetweenNeurons * SCALE_FACTOR));
 
             using (Graphics g = Graphics.FromImage(render))
             {
+                g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
                 g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
                 g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
                 g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
 
+                g.FillRectangle(Brushes.WhiteSmoke, 0, 0, render.Width, render.Height);
+
 
                 foreach (Node node in drinksMap.NeuralNet)
                 {
-                    g.DrawString(node.DrinkID.ToString(), SystemFonts.MessageBoxFont, GetDrinkBrushById(node.DrinkID) , (float)(node.X * SCALE_FACTOR), (float)(node.Y * SCALE_FACTOR));
+                    g.DrawString(node.DrinkID.ToString(), SystemFonts.MessageBoxFont, GetDrinkBrushById(node.DrinkID),
+                        (float)(node.X * drinksMap.DistanceBetweenNeurons * SCALE_FACTOR),
+                        (float)(node.Y * drinksMap.DistanceBetweenNeurons * SCALE_FACTOR));
                 }
             }
 
@@ -58,7 +63,7 @@ namespace DrinksAdvisorSOM.NeuralNet.Rendering
 
         private Color RandomizeColor()
         {
-            return Color.FromArgb(randomizer.Next(255), randomizer.Next(255), randomizer.Next(255));
+            return Color.FromArgb(randomizer.Next(193), randomizer.Next(193), randomizer.Next(193));
         }
 
     }

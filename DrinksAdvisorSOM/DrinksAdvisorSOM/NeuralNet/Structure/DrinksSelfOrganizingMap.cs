@@ -12,18 +12,23 @@ namespace DrinksAdvisorSOM.NeuralNet.Structure
         public int NeuralMapWidth { get; private set; }
         public int NeuralMapHeight { get; private set; }
         public float DistanceBetweenNeurons { get; private set; }
+        public double VectorQuantizationError { get; private set; }
+        public double VectorQuantizationErrorStandardDeviation { get; private set; }
 
 
         
         private Dictionary<int, List<PointF>> nodesByDrinkIdDictionary;
         private Dictionary<PointF, int> nodesByCoordinatesDictionary;
 
-        public DrinksSelfOrganizingMap(Node[] neuralNet, int neuralMapWidth, int neuralMapHeight, float distanceBetweenNeurons)
+        public DrinksSelfOrganizingMap(Node[] neuralNet, int neuralMapWidth, int neuralMapHeight, float distanceBetweenNeurons,
+            double vectorQuantizationError, double vectorQuantizationErrorStandardDeviation)
         {
             NeuralNet = neuralNet;
             NeuralMapWidth = neuralMapWidth;
             NeuralMapHeight = neuralMapHeight;
             DistanceBetweenNeurons = distanceBetweenNeurons;
+            VectorQuantizationError = vectorQuantizationError;
+            VectorQuantizationErrorStandardDeviation = vectorQuantizationErrorStandardDeviation;
 
             nodesByDrinkIdDictionary = ComputeNodesByDrinkIdDictionary(neuralNet);
             nodesByCoordinatesDictionary = ComputeNodesByCoordinatesDictionary(neuralNet);
@@ -81,6 +86,5 @@ namespace DrinksAdvisorSOM.NeuralNet.Structure
 
             return result;
         }
-
     }
 }

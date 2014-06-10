@@ -19,6 +19,8 @@ namespace DrinksAdvisorSOM.NeuralNet.FileIO
                 writer.WriteElementString("Width", drinksSelfOrganizingMap.NeuralMapWidth.ToString());
                 writer.WriteElementString("Height", drinksSelfOrganizingMap.NeuralMapHeight.ToString());
                 writer.WriteElementString("DistanceBetweenNeurons", drinksSelfOrganizingMap.DistanceBetweenNeurons.ToString());
+                writer.WriteElementString("VectorQuantizationError", drinksSelfOrganizingMap.VectorQuantizationError.ToString());
+                writer.WriteElementString("VectorQuantizationErrorStandardDeviation", drinksSelfOrganizingMap.VectorQuantizationErrorStandardDeviation.ToString());
                 writer.WriteEndElement();
 
                 writer.WriteStartElement("Data");

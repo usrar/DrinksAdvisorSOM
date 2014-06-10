@@ -13,17 +13,22 @@ namespace DrinksAdvisorSOM.Forms.Auxiliaries
     {
         private const int DEFAULT_EPOCHS_COUNT = 14200,
                           DEFAULT_NEURAL_MAP_WIDTH = 142,
-                          DEFAULT_NEURAL_MAP_HEIGHT = 100;
+                          DEFAULT_NEURAL_MAP_HEIGHT = 100,
+                          DEFAULT_MAX_NEURON_REST_TIME = 3;
 
-        private const double DEFAULT_INITIAL_LEARNING_RATE = 0.10;
+        private const double DEFAULT_INITIAL_LEARNING_RATE = 0.10,
+                             DEFAULT_MIN_NEURON_POTENTIAL = 0.75;
         private const float DEFAULT_DISTANCE_BETWEEN_NEURONS = 1;
 
 
         public double InitialLearningRate{ get; private set; }
+        public double MinNeuronPotential { get; private set; } 
         public float DistanceBetweenNeurons { get; private set; }
         public int EpochsCount { get; private set; }
         public int NeuralMapWidth { get; private set; }
         public int NeuralMapHeight { get; private set; }
+        public int MaxNeuronRestTime { get; private set; }
+         
 
 
         public NeuralNetLearningParametersForm()
@@ -38,6 +43,8 @@ namespace DrinksAdvisorSOM.Forms.Auxiliaries
             tb_DistanceBetweenNeurons.Text = DEFAULT_DISTANCE_BETWEEN_NEURONS.ToString();
             tb_NeuralMapWidth.Text = DEFAULT_NEURAL_MAP_WIDTH.ToString();
             tb_NeuralMapHeight.Text = DEFAULT_NEURAL_MAP_HEIGHT.ToString();
+            tb_MinNeuronPotential.Text = DEFAULT_MIN_NEURON_POTENTIAL.ToString();
+            tb_MaxNeuronRestTime.Text = DEFAULT_MAX_NEURON_REST_TIME.ToString();
         }
 
         private void btn_OK_Click(object sender, EventArgs e)
@@ -51,6 +58,11 @@ namespace DrinksAdvisorSOM.Forms.Auxiliaries
             DistanceBetweenNeurons = float.TryParse(tb_DistanceBetweenNeurons.Text.Trim(), out f_val) ? f_val : DEFAULT_DISTANCE_BETWEEN_NEURONS;
             NeuralMapWidth = int.TryParse(tb_NeuralMapWidth.Text.Trim(), out int_val) ? int_val : DEFAULT_NEURAL_MAP_WIDTH;
             NeuralMapHeight = int.TryParse(tb_NeuralMapHeight.Text.Trim(), out int_val) ? int_val : DEFAULT_NEURAL_MAP_HEIGHT;
+            MinNeuronPotential = double.TryParse(tb_MinNeuronPotential.Text.Trim(), out d_val) ? d_val : DEFAULT_MIN_NEURON_POTENTIAL;
+            MaxNeuronRestTime = int.TryParse(tb_MaxNeuronRestTime.Text.Trim(), out int_val) ? int_val : DEFAULT_MAX_NEURON_REST_TIME;
+
+            if (MinNeuronPotential > 1 || MinNeuronPotential < 0)
+                MinNeuronPotential = 0;
 
             this.DialogResult = DialogResult.OK;
             this.Close();

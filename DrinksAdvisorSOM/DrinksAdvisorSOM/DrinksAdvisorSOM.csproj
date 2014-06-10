@@ -65,6 +65,7 @@
     <Compile Include="NeuralNet\FileIO\NeuralNetReader.cs" />
     <Compile Include="NeuralNet\FileIO\NeuralNetWriter.cs" />
     <Compile Include="NeuralNet\IDrinksSelfOrganizingMapController.cs" />
+    <Compile Include="NeuralNet\Learning\MathExtension.cs" />
     <Compile Include="NeuralNet\Rendering\NeuralNetRenderer.cs" />
     <Compile Include="NeuralNet\Learning\NeuralNetTeacher.cs" />
     <Compile Include="NeuralNet\Structure\DrinksSelfOrganizingMap.cs" />
