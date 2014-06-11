@@ -212,6 +212,23 @@ namespace DrinksAdvisorSOM.Forms
             lv_SimilarDrinks.Items.Clear();
             lv_SimilarDrinks.LargeImageList.Images.Clear();
 
+            System.Collections.Concurrent.ConcurrentDictionary<int, Image> dictImages = new System.Collections.Concurrent.ConcurrentDictionary<int, Image>(); 
+            
+            System.Threading.Tasks.Parallel.ForEach( similarDrinksArray, drink =>
+            {
+                dictImages.TryAdd(drink.ID,GetDrinkImage(drink).ResizeImage(SIMILAR_DRINK_IMAGE_SIZE));    
+            });
+
+            foreach(Drink drink in similarDrinksArray)
+            {
+                lv_SimilarDrinks.LargeImageList.Images.Add(drink.ID.ToString(),dictImages[drink.ID]);
+                ListViewItem lvi = new ListViewItem(drink.Name);
+                lvi.Tag = drink.Url;
+                lvi.ImageKey = drink.ID.ToString();
+                lv_SimilarDrinks.Items.Add(lvi);
+            }
+
+            /*
             for (int i = 0; i < similarDrinksArray.Length; i++)
             {
                 lv_SimilarDrinks.LargeImageList.Images.Add(GetDrinkImage(similarDrinksArray[i]).ResizeImage(SIMILAR_DRINK_IMAGE_SIZE));
@@ -221,6 +238,7 @@ namespace DrinksAdvisorSOM.Forms
 
                 lv_SimilarDrinks.Items.Add(lvi);
             }
+            */
 
             lv_SimilarDrinks.EndUpdate();
         }
